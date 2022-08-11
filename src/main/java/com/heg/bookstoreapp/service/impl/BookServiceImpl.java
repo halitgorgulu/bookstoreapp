@@ -51,10 +51,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book updateById(Long id, Book book) {
         Book currentBook = this.findById(id);
-        currentBook.setCategory(categoryService.findById(book.getCategory().getId()));
+        /*currentBook.setCategory(categoryService.findById(book.getCategory().getId()));
         currentBook.setName(book.getName());
         currentBook.setImageLink(book.getImageLink());
-        currentBook.setPrice(book.getPrice());
+        currentBook.setPrice(book.getPrice());*/
         return bookRepo.save(currentBook);
     }
 
