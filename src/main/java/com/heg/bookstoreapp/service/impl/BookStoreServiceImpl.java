@@ -62,4 +62,9 @@ public class BookStoreServiceImpl implements BookStoreService {
         BookStore currentBookStore =  this.findById(id);
         bookStoreRepo.delete(currentBookStore);
     }
+
+
+    /*public List<BookStore> getAllBooks(Long id) {
+       // return bookStoreRepo.getAllBookStoresByBookId(id);
+    }*/
 }

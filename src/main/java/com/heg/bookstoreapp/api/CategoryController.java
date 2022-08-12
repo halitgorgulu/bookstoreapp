@@ -1,5 +1,6 @@
 package com.heg.bookstoreapp.api;
 
+import com.heg.bookstoreapp.model.Book;
 import com.heg.bookstoreapp.model.Category;
 import com.heg.bookstoreapp.service.BookService;
 import com.heg.bookstoreapp.service.CategoryService;
@@ -31,4 +32,8 @@ public class CategoryController {
     }
 
 
+    @GetMapping("/allBooksInCategory/{id}")
+    List<Book> getBooksByCategory(@PathVariable Long id) {
+        return categoryService.getBooksById(id);
+    }
 }

@@ -64,4 +64,9 @@ public class BookServiceImpl implements BookService {
         bookRepo.delete(currentBook);
 
     }
+
+    @Override
+    public List<Book> getBooksByCategoryId(Long id) {
+        return bookRepo.getBooksByCategory_Id(id);
+    }
 }

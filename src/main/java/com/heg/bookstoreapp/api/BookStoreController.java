@@ -40,4 +40,9 @@ public class BookStoreController {
         return bookStoreService.updateById(bookStoreId, bookStore);
     }
 
+    /*@GetMapping("/allBooksInBookstore/{id}")
+    List<BookStore> getAllBooksById(Long id) {
+        return bookStoreService.getAllBooks(id);
+    }*/
+
 }

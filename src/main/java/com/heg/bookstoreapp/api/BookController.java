@@ -42,5 +42,9 @@ public class BookController {
         bookService.delete(id);
     }
 
+    @GetMapping("/getCategories/{id}")
+    List<Book> getBooksByCategoryId(@PathVariable Long id){
+        return bookService.getBooksByCategoryId(id);
+    }
 
 }
