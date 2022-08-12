@@ -2,11 +2,8 @@ package com.heg.bookstoreapp.service.impl;
 
 import com.heg.bookstoreapp.model.Book;
 import com.heg.bookstoreapp.repo.BookRepo;
-import com.heg.bookstoreapp.repo.BookStoreRepo;
-import com.heg.bookstoreapp.repo.CategoryRepo;
 import com.heg.bookstoreapp.service.BookService;
 import com.heg.bookstoreapp.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,10 +26,10 @@ public class BookServiceImpl implements BookService {
     public Book insert(Book book) {
 
         List<Book> bookList = bookRepo.findAll();
-        for(Book bookIt:bookList){
-           if(book.getName().equals(bookIt.getName())){
+        for (Book bookIt : bookList) {
+            if (book.getName().equals(bookIt.getName())) {
                 throw new RuntimeException("This book is already inserted.");
-           }
+            }
         }
         this.bookRepo.save(book);
         return book;
@@ -51,10 +48,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book updateById(Long id, Book book) {
         Book currentBook = this.findById(id);
-        /*currentBook.setCategory(categoryService.findById(book.getCategory().getId()));
+        currentBook.setCategory(book.getCategory());
         currentBook.setName(book.getName());
         currentBook.setImageLink(book.getImageLink());
-        currentBook.setPrice(book.getPrice());*/
+        currentBook.setPrice(book.getPrice());
         return bookRepo.save(currentBook);
     }
 
