@@ -94,4 +94,14 @@ public class Book {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public void setPriceWithCityInfo(String city){
+        if(city.equals("İstanbul")){
+            this.price += 10;
+        }else if(city.equals("Ankara")){
+            this.price += 20;
+        }else if(city.equals("İzmir")){
+            this.price += 30;
+        }
+    }
 }
