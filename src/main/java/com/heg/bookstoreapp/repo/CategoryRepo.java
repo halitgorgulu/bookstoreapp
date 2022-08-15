@@ -10,4 +10,10 @@ import java.util.List;
 @Repository
 public interface CategoryRepo extends JpaRepository<Category,Long> {
     List<Book> getBooksById(Long categoryId);
+
+    void deleteById(Long id);
+
+    boolean existsCategoryByName(String name);
+
+    Category getCategoryByName(String name);
 }

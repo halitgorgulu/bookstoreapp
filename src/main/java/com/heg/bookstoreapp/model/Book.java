@@ -1,6 +1,7 @@
 package com.heg.bookstoreapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.net.URL;
@@ -21,11 +22,16 @@ public class Book {
 
     private Float price;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "bookStoreBooks")
+    @JsonIgnoreProperties({"bookStoreBooks"})
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "bookStoreBooks")
     private Set<BookStore> bookStores = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn
     private Category category;
 

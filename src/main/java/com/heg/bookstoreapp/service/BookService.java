@@ -1,20 +1,24 @@
 package com.heg.bookstoreapp.service;
 
+import com.heg.bookstoreapp.dto.BookDto;
 import com.heg.bookstoreapp.model.Book;
+import com.heg.bookstoreapp.model.BookStore;
 
 import java.util.List;
 
 public interface BookService {
 
-    Book insert(Book book);
+    BookDto insert(BookDto book);
 
-    List<Book> findAll();
+    List<BookDto> findAll();
 
-    Book findById(Long id);
+    BookDto findById(Long id);
 
-    Book updateById(Long id,Book book);
+    BookDto updateById(Long id,BookDto book);
 
     void delete(Long id);
 
     List<Book> getBooksByCategoryId(Long id);
+
+    List<BookStore> getBookStoreByContainsBook(Long id);
 }

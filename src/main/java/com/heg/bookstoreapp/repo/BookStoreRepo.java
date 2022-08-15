@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookStoreRepo extends JpaRepository<BookStore,Long> {
-    //List<BookStore> getAllBookStoresByBookId(Long bookId);
-    List<BookStore> getBookStoresByBookStoreBooksContains(Book book);
-    BookStore getBookStoreByCityAndAddress(String city, String address);
+    List<BookStore> getBookStoresByBookStoreBooksContains(Optional<Book> book);
+
+    void deleteById(Long id);
 }

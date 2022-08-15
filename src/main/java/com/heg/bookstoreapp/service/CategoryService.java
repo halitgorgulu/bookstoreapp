@@ -1,5 +1,7 @@
 package com.heg.bookstoreapp.service;
 
+import com.heg.bookstoreapp.dto.BookDto;
+import com.heg.bookstoreapp.dto.CategoryDto;
 import com.heg.bookstoreapp.model.Book;
 import com.heg.bookstoreapp.model.Category;
 
@@ -7,16 +9,14 @@ import java.util.List;
 
 public interface CategoryService {
 
-    Category insert(Category category);
+    CategoryDto insert(CategoryDto categoryDto);
 
-    List<Category> findAll();
+    List<CategoryDto> findAll();
 
-    Category findById(Long id);
+    CategoryDto findById(Long id);
 
-    void delete(Long id);
+    void deleteById(Long id);
 
-    Category updateById(Long id,Category category);
-
-    List<Book> getBooksById(Long id);
+    CategoryDto updateById(Long id,CategoryDto categoryDto);
 
 }
