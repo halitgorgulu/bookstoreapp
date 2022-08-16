@@ -30,7 +30,7 @@ public class Book {
             mappedBy = "bookStoreBooks")
     private Set<BookStore> bookStores = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn
     private Category category;
 

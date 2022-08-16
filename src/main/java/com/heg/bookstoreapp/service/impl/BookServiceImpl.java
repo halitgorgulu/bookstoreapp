@@ -45,7 +45,11 @@ public class BookServiceImpl implements BookService {
                 throw new RuntimeException("This book is already inserted.");
             }
         }
-        return modelMapper.map(bookRepo.save(bookInstance),BookDto.class);
+        if(categoryRepo.existsCategoryByName(bookInstance.getCategory().getName())){
+            bookInstance.setCategory(categoryRepo.getCategoryByName(bookInstance.getCategory().getName()));
+            return modelMapper.map(bookRepo.save(bookInstance),BookDto.class);
+        }
+        throw new RuntimeException("Category not found.");
     }
 
     @Override
