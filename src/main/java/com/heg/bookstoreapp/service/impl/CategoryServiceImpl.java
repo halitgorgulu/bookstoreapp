@@ -1,10 +1,6 @@
 package com.heg.bookstoreapp.service.impl;
 
-import com.heg.bookstoreapp.dto.BookDto;
-import com.heg.bookstoreapp.dto.BookStoreDto;
 import com.heg.bookstoreapp.dto.CategoryDto;
-import com.heg.bookstoreapp.model.Book;
-import com.heg.bookstoreapp.model.BookStore;
 import com.heg.bookstoreapp.model.Category;
 import com.heg.bookstoreapp.repo.BookRepo;
 import com.heg.bookstoreapp.repo.CategoryRepo;

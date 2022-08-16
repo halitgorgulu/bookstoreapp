@@ -1,9 +1,6 @@
 package com.heg.bookstoreapp.api;
 
-import com.heg.bookstoreapp.dto.BookDto;
 import com.heg.bookstoreapp.dto.BookStoreDto;
-import com.heg.bookstoreapp.model.Book;
-import com.heg.bookstoreapp.model.BookStore;
 import com.heg.bookstoreapp.service.BookService;
 import com.heg.bookstoreapp.service.BookStoreService;
 import org.springframework.web.bind.annotation.*;

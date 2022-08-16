@@ -1,12 +1,7 @@
 package com.heg.bookstoreapp.api;
 
-import com.heg.bookstoreapp.dto.BookDto;
 import com.heg.bookstoreapp.dto.CategoryDto;
-import com.heg.bookstoreapp.model.Book;
-import com.heg.bookstoreapp.model.Category;
-import com.heg.bookstoreapp.service.BookService;
 import com.heg.bookstoreapp.service.CategoryService;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

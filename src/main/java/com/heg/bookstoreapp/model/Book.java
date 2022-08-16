@@ -1,6 +1,5 @@
 package com.heg.bookstoreapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -96,12 +95,17 @@ public class Book {
     }
 
     public void setPriceWithCityInfo(String city){
-        if(city.equals("İstanbul")){
-            this.price += 10;
-        }else if(city.equals("Ankara")){
-            this.price += 20;
-        }else if(city.equals("İzmir")){
-            this.price += 30;
+        switch (city) {
+            case "İstanbul":
+                this.price += 10;
+                break;
+            case "Ankara":
+                this.price += 20;
+                break;
+            case "İzmir":
+                this.price += 30;
+                break;
+            default:
         }
     }
 }

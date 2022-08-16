@@ -1,8 +1,6 @@
 package com.heg.bookstoreapp.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.heg.bookstoreapp.model.Book;
 import com.heg.bookstoreapp.model.BookStore;
 import com.heg.bookstoreapp.model.Category;
 import lombok.Data;
