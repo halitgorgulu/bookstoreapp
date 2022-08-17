@@ -1,6 +1,8 @@
 package com.heg.bookstoreapp.api;
 
+import com.heg.bookstoreapp.dto.BookDto;
 import com.heg.bookstoreapp.model.Book;
+import com.heg.bookstoreapp.model.BookStore;
 import com.heg.bookstoreapp.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,33 +19,42 @@ public class BookController {
     }
 
     @GetMapping("/allBooks")
-    List<Book> getBooks(){
+    List<BookDto> getBooks(){
         return bookService.findAll();
     }
 
     @PostMapping("/addBook")
-    Book createBook(@RequestBody Book book){
+    BookDto createBook(@RequestBody BookDto book){
         return bookService.insert(book);
     }
 
     @GetMapping("/getById/{id}")
-    Book getBookById(@PathVariable Long id) {
+    BookDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
     @PutMapping("/update/{id}")
-    Book updatePut(@PathVariable Long id , @RequestBody Book book) {
+    BookDto updatePut(@PathVariable Long id , @RequestBody BookDto book) {
         return bookService.updateById(id,book);
     }
 
     @DeleteMapping("/delete/{id}")
     void deleteBookById(@PathVariable Long id) {
-        bookService.delete(id);
+        try{
+            bookService.delete(id);
+        }catch(Exception ignored){
+            System.out.println("This book is available in some bookstores. Therefore, the deletion cannot be performed.");
+        }
     }
 
     @GetMapping("/getCategories/{id}")
     List<Book> getBooksByCategoryId(@PathVariable Long id){
         return bookService.getBooksByCategoryId(id);
+    }
+
+    @GetMapping("/getBookStores/{id}")
+    List<BookStore> getBookStoreByContainsBook(@PathVariable Long id){
+        return bookService.getBookStoreByContainsBook(id);
     }
 
 }

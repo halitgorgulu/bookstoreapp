@@ -1,6 +1,6 @@
 package com.heg.bookstoreapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,7 +19,12 @@ public class BookStore {
 
     private String address;
 
-    @ManyToMany
+    @JsonIgnoreProperties({"bookStores"})
+    @ManyToMany(fetch = FetchType.LAZY,
+    cascade =  {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinTable(
             name="book_bookstore",
             joinColumns = @JoinColumn(name = "book_store_id"),

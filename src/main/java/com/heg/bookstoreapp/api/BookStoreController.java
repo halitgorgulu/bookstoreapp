@@ -1,7 +1,6 @@
 package com.heg.bookstoreapp.api;
 
-import com.heg.bookstoreapp.model.Book;
-import com.heg.bookstoreapp.model.BookStore;
+import com.heg.bookstoreapp.dto.BookStoreDto;
 import com.heg.bookstoreapp.service.BookService;
 import com.heg.bookstoreapp.service.BookStoreService;
 import org.springframework.web.bind.annotation.*;
@@ -23,22 +22,46 @@ public class BookStoreController {
     }
 
     @GetMapping("/allBookStores")
-    List<BookStore> getBookStores(){
+    List<BookStoreDto> getBookStores(){
         return bookStoreService.findAll();
     }
 
     @PostMapping("/addBookStore")
-    BookStore createBookStore(@RequestBody BookStore bookStore){
+    BookStoreDto createBookStore(@RequestBody BookStoreDto bookStore){
         return bookStoreService.insert(bookStore);
     }
 
-    @PutMapping("/put/{bookStoreId}/books/{bookId}")
-    BookStore bookToBookStore(@PathVariable Long bookStoreId, @PathVariable Long bookId){
-        BookStore bookStore = bookStoreService.findById(bookStoreId) ;
-        Book book = bookService.findById(bookId);
-        bookStore.getBookStoreBooks().add(book);
-        return bookStoreService.updateById(bookStoreId, bookStore);
+    @GetMapping("/getById/{id}")
+    BookStoreDto getBookStoreById(@PathVariable Long id) {
+        return bookStoreService.findById(id);
     }
+
+    @PutMapping("/updateById/{id}")
+    BookStoreDto updateBookstore(@PathVariable Long id,@RequestBody BookStoreDto bookStoreDto){
+        return bookStoreService.updateById(id,bookStoreDto);
+    }
+
+    @PutMapping("/put/{bookStoreId}/books/{bookId}")
+    BookStoreDto bookToBookStore(@PathVariable Long bookStoreId, @PathVariable Long bookId){
+
+        return bookStoreService.putBookToBookStore(bookStoreId,bookId);
+    }
+
+    @PutMapping("/delete/{bookStoreId}/books/{bookId}")
+    BookStoreDto deleteBookFromBookStore(@PathVariable Long bookStoreId, @PathVariable Long bookId) {
+
+        return bookStoreService.deleteBookFromBookstore(bookStoreId,bookId);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    void deleteBookStoreById(@PathVariable Long id) {
+        try{
+            bookStoreService.deleteById(id);
+        }catch(Exception ignored){
+            System.out.println("The deletion cannot be performed.");
+        }
+    }
+
 
     /*@GetMapping("/allBooksInBookstore/{id}")
     List<BookStore> getAllBooksById(Long id) {

@@ -1,8 +1,6 @@
 package com.heg.bookstoreapp.api;
 
-import com.heg.bookstoreapp.model.Book;
-import com.heg.bookstoreapp.model.Category;
-import com.heg.bookstoreapp.service.BookService;
+import com.heg.bookstoreapp.dto.CategoryDto;
 import com.heg.bookstoreapp.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,26 +12,37 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    private final BookService bookService;
-
-    public CategoryController(CategoryService categoryService, BookService bookService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.bookService = bookService;
     }
 
     @GetMapping("/allCategories")
-    List<Category> getCategories() {
+    List<CategoryDto> getCategories() {
         return categoryService.findAll();
     }
 
     @PostMapping("/addCategory")
-    Category createCategory(@RequestBody Category category) {
-        return categoryService.insert(category);
+    CategoryDto createCategory(@RequestBody CategoryDto categoryDto) {
+        return categoryService.insert(categoryDto);
     }
 
-
-    @GetMapping("/allBooksInCategory/{id}")
-    List<Book> getBooksByCategory(@PathVariable Long id) {
-        return categoryService.getBooksById(id);
+    @GetMapping("/getById/{id}")
+    CategoryDto getById(@PathVariable Long id) {
+        return categoryService.findById(id);
     }
+
+    @PutMapping("/update/{id}")
+    CategoryDto updateById(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        return categoryService.updateById(id, categoryDto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    void deleteById(@PathVariable Long id) {
+        try{
+            categoryService.deleteById(id);
+        } catch (Exception ignored) {
+            System.out.println("The deletion cannot be performed.");
+        }
+    }
+
 }

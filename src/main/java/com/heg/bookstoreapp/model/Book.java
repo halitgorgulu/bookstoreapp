@@ -1,6 +1,6 @@
 package com.heg.bookstoreapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.net.URL;
@@ -21,8 +21,13 @@ public class Book {
 
     private Float price;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "bookStoreBooks")
+    @JsonIgnoreProperties({"bookStoreBooks"})
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "bookStoreBooks")
     private Set<BookStore> bookStores = new HashSet<>();
 
     @ManyToOne
@@ -87,5 +92,20 @@ public class Book {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void setPriceWithCityInfo(String city){
+        switch (city) {
+            case "İstanbul":
+                this.price += 10;
+                break;
+            case "Ankara":
+                this.price += 20;
+                break;
+            case "İzmir":
+                this.price += 30;
+                break;
+            default:
+        }
     }
 }
