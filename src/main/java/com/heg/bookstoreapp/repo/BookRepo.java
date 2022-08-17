@@ -11,4 +11,6 @@ public interface BookRepo extends JpaRepository<Book,Long> {
     List<Book> getBooksByCategory_Id(Long categoryId);
 
     void deleteById(Long id);
+
+    int countBooksByName(String name);
 }
