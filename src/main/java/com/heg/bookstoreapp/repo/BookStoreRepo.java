@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookStoreRepo extends JpaRepository<BookStore,Long> {
+public interface BookStoreRepo extends JpaRepository<BookStore, Long> {
     List<BookStore> getBookStoresByBookStoreBooksContains(Optional<Book> book);
 
     void deleteById(Long id);

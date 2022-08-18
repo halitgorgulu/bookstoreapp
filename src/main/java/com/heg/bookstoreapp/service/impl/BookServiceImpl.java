@@ -26,7 +26,6 @@ public class BookServiceImpl implements BookService {
     private final ModelMapper modelMapper;
 
 
-
     public BookServiceImpl(BookRepo bookRepo, BookStoreRepo bookStoreRepo, CategoryRepo categoryRepo, ModelMapper modelMapper) {
         this.bookRepo = bookRepo;
         this.bookStoreRepo = bookStoreRepo;
@@ -37,7 +36,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto insert(BookDto bookDto) {
-        Book bookInstance = modelMapper.map(bookDto,Book.class);
+        Book bookInstance = modelMapper.map(bookDto, Book.class);
 
         List<Book> bookList = bookRepo.findAll();
         for (Book bookIt : bookList) {
@@ -45,12 +44,11 @@ public class BookServiceImpl implements BookService {
                 throw new RuntimeException("This book is already inserted.");
             }
         }
-        if(bookInstance.getCategory() == null){
-            return modelMapper.map(bookRepo.save(bookInstance),BookDto.class);
-        }
-        else if(categoryRepo.existsCategoryByName(bookInstance.getCategory().getName())){
+        if (bookInstance.getCategory() == null) {
+            return modelMapper.map(bookRepo.save(bookInstance), BookDto.class);
+        } else if (categoryRepo.existsCategoryByName(bookInstance.getCategory().getName())) {
             bookInstance.setCategory(categoryRepo.getCategoryByName(bookInstance.getCategory().getName()));
-            return modelMapper.map(bookRepo.save(bookInstance),BookDto.class);
+            return modelMapper.map(bookRepo.save(bookInstance), BookDto.class);
         }
         throw new RuntimeException("Category not found.");
     }
@@ -58,14 +56,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> findAll() {
         List<Book> books = bookRepo.findAll();
-        return books.stream().map(book -> modelMapper.map(book,BookDto.class)).collect(Collectors.toList());
+        return books.stream().map(book -> modelMapper.map(book, BookDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public BookDto findById(Long id) {
         Optional<Book> book = bookRepo.findById(id);
-        if(book.isPresent()){
-            return modelMapper.map(book.get(),BookDto.class);
+        if (book.isPresent()) {
+            return modelMapper.map(book.get(), BookDto.class);
         }
         throw new RuntimeException("Not found book with id: " + id);
     }
@@ -74,13 +72,13 @@ public class BookServiceImpl implements BookService {
     public BookDto updateById(Long id, BookDto book) {
         Optional<Book> resultBook = bookRepo.findById(id);
 
-        if(resultBook.isPresent() && categoryRepo.existsCategoryByName(book.getCategory().getName())){
+        if (resultBook.isPresent() && categoryRepo.existsCategoryByName(book.getCategory().getName())) {
             resultBook.get().setName(book.getName());
             resultBook.get().setPrice(book.getPrice());
             resultBook.get().setImageLink(book.getImageLink());
             resultBook.get().setCategory(categoryRepo.getCategoryByName(book.getCategory().getName()));
             bookRepo.save(resultBook.get());
-            return modelMapper.map(resultBook.get(),BookDto.class);
+            return modelMapper.map(resultBook.get(), BookDto.class);
         }
         throw new RuntimeException("Not found book with id: " + id);
     }
@@ -88,7 +86,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         Optional<Book> book = bookRepo.findById(id);
-        if(book.isPresent()){
+        if (book.isPresent()) {
             bookRepo.deleteById(id);
         }
         throw new RuntimeException("Not found book with id: " + id);
@@ -102,7 +100,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookStore> getBookStoreByContainsBook(Long id) {
         Optional<Book> book = bookRepo.findById(id);
-        if(book.isPresent()){
+        if (book.isPresent()) {
             return bookStoreRepo.getBookStoresByBookStoreBooksContains(book);
         }
         throw new RuntimeException("Not found book with id: " + id);

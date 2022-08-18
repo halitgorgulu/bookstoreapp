@@ -19,12 +19,12 @@ public class BookController {
     }
 
     @GetMapping("/allBooks")
-    List<BookDto> getBooks(){
+    List<BookDto> getBooks() {
         return bookService.findAll();
     }
 
     @PostMapping("/addBook")
-    BookDto createBook(@RequestBody BookDto book){
+    BookDto createBook(@RequestBody BookDto book) {
         return bookService.insert(book);
     }
 
@@ -34,26 +34,26 @@ public class BookController {
     }
 
     @PutMapping("/update/{id}")
-    BookDto updatePut(@PathVariable Long id , @RequestBody BookDto book) {
-        return bookService.updateById(id,book);
+    BookDto updatePut(@PathVariable Long id, @RequestBody BookDto book) {
+        return bookService.updateById(id, book);
     }
 
     @DeleteMapping("/delete/{id}")
     void deleteBookById(@PathVariable Long id) {
-        try{
+        try {
             bookService.delete(id);
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
             System.out.println("This book is available in some bookstores. Therefore, the deletion cannot be performed.");
         }
     }
 
     @GetMapping("/getCategories/{id}")
-    List<Book> getBooksByCategoryId(@PathVariable Long id){
+    List<Book> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.getBooksByCategoryId(id);
     }
 
     @GetMapping("/getBookStores/{id}")
-    List<BookStore> getBookStoreByContainsBook(@PathVariable Long id){
+    List<BookStore> getBookStoreByContainsBook(@PathVariable Long id) {
         return bookService.getBookStoreByContainsBook(id);
     }
 

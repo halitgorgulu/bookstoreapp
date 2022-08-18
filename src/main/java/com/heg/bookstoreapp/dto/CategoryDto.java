@@ -11,7 +11,7 @@ public class CategoryDto {
 
     private String name;
 
-    @JsonIgnoreProperties({"id","category","bookStores"})
+    @JsonIgnoreProperties({"id", "category", "bookStores"})
     private Set<Book> books;
 
 }

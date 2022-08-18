@@ -38,7 +38,7 @@ public class CategoryController {
 
     @DeleteMapping("/delete/{id}")
     void deleteById(@PathVariable Long id) {
-        try{
+        try {
             categoryService.deleteById(id);
         } catch (Exception ignored) {
             System.out.println("The deletion cannot be performed.");

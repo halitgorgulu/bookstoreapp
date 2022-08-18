@@ -22,12 +22,12 @@ public class BookStoreController {
     }
 
     @GetMapping("/allBookStores")
-    List<BookStoreDto> getBookStores(){
+    List<BookStoreDto> getBookStores() {
         return bookStoreService.findAll();
     }
 
     @PostMapping("/addBookStore")
-    BookStoreDto createBookStore(@RequestBody BookStoreDto bookStore){
+    BookStoreDto createBookStore(@RequestBody BookStoreDto bookStore) {
         return bookStoreService.insert(bookStore);
     }
 
@@ -37,27 +37,27 @@ public class BookStoreController {
     }
 
     @PutMapping("/updateById/{id}")
-    BookStoreDto updateBookstore(@PathVariable Long id,@RequestBody BookStoreDto bookStoreDto){
-        return bookStoreService.updateById(id,bookStoreDto);
+    BookStoreDto updateBookstore(@PathVariable Long id, @RequestBody BookStoreDto bookStoreDto) {
+        return bookStoreService.updateById(id, bookStoreDto);
     }
 
     @PutMapping("/put/{bookStoreId}/books/{bookId}")
-    BookStoreDto bookToBookStore(@PathVariable Long bookStoreId, @PathVariable Long bookId){
+    BookStoreDto bookToBookStore(@PathVariable Long bookStoreId, @PathVariable Long bookId) {
 
-        return bookStoreService.putBookToBookStore(bookStoreId,bookId);
+        return bookStoreService.putBookToBookStore(bookStoreId, bookId);
     }
 
     @PutMapping("/delete/{bookStoreId}/books/{bookId}")
     BookStoreDto deleteBookFromBookStore(@PathVariable Long bookStoreId, @PathVariable Long bookId) {
 
-        return bookStoreService.deleteBookFromBookstore(bookStoreId,bookId);
+        return bookStoreService.deleteBookFromBookstore(bookStoreId, bookId);
     }
 
     @DeleteMapping("/delete/{id}")
     void deleteBookStoreById(@PathVariable Long id) {
-        try{
+        try {
             bookStoreService.deleteById(id);
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
             System.out.println("The deletion cannot be performed.");
         }
     }

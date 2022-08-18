@@ -21,12 +21,12 @@ public class BookStore {
 
     @JsonIgnoreProperties({"bookStores"})
     @ManyToMany(fetch = FetchType.LAZY,
-    cascade =  {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(
-            name="book_bookstore",
+            name = "book_bookstore",
             joinColumns = @JoinColumn(name = "book_store_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )

@@ -30,52 +30,52 @@ public class BookStoreServiceImpl implements BookStoreService {
 
     @Override
     public BookStoreDto insert(BookStoreDto bookStoreDto) {
-        BookStore bookStoreInstance = modelMapper.map(bookStoreDto,BookStore.class);
+        BookStore bookStoreInstance = modelMapper.map(bookStoreDto, BookStore.class);
 
         List<BookStore> bookStoreList = bookStoreRepo.findAll();
-        for(BookStore bookStoreIt:bookStoreList){
-            if(bookStoreInstance.getName().equals(bookStoreIt.getName())){
-                throw new RuntimeException("This book is already inserted.");
+        for (BookStore bookStoreIt : bookStoreList) {
+            if (bookStoreInstance.getName().equals(bookStoreIt.getName())) {
+                throw new RuntimeException("This bookstore is already inserted.");
             }
         }
-        return modelMapper.map(bookStoreRepo.save(bookStoreInstance),BookStoreDto.class);
+        return modelMapper.map(bookStoreRepo.save(bookStoreInstance), BookStoreDto.class);
     }
 
     @Override
     public List<BookStoreDto> findAll() {
         List<BookStore> bookStores = bookStoreRepo.findAll();
-        return bookStores.stream().map(bookStore -> modelMapper.map(bookStore,BookStoreDto.class)).collect(Collectors.toList());
+        return bookStores.stream().map(bookStore -> modelMapper.map(bookStore, BookStoreDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public BookStoreDto findById(Long id) {
         Optional<BookStore> bookStore = bookStoreRepo.findById(id);
-        if(bookStore.isPresent()){
-            return modelMapper.map(bookStore.get(),BookStoreDto.class);
+        if (bookStore.isPresent()) {
+            return modelMapper.map(bookStore.get(), BookStoreDto.class);
         }
-        throw new RuntimeException("Not found book with id: " + id);
+        throw new RuntimeException("Not found bookstore with id: " + id);
     }
 
     @Override
     public BookStoreDto updateById(Long id, BookStoreDto bookStoreDto) {
         Optional<BookStore> bookStore = bookStoreRepo.findById(id);
 
-        if(bookStore.isPresent()){
+        if (bookStore.isPresent()) {
             bookStore.get().setName(bookStoreDto.getName());
             bookStore.get().setCity(bookStoreDto.getCity());
             bookStore.get().setAddress(bookStoreDto.getAddress());
             bookStore.get().setBookStoreBooks(bookStoreDto.getBookStoreBooks());
             bookStoreRepo.save(bookStore.get());
-            return modelMapper.map(bookStore.get(),BookStoreDto.class);
+            return modelMapper.map(bookStore.get(), BookStoreDto.class);
         }
-        throw new RuntimeException("Not found book with id: " + id);
+        throw new RuntimeException("Not found bookstore with id: " + id);
     }
 
     @Override
     public void deleteById(Long id) {
         Optional<BookStore> bookStore = bookStoreRepo.findById(id);
 
-        if(bookStore.isPresent()){
+        if (bookStore.isPresent()) {
             bookStoreRepo.deleteById(id);
         }
         throw new RuntimeException("Not found bookstore with id: " + id);
@@ -85,10 +85,10 @@ public class BookStoreServiceImpl implements BookStoreService {
     public BookStoreDto putBookToBookStore(Long bookStoreId, Long bookId) {
         Optional<BookStore> bookStore = bookStoreRepo.findById(bookStoreId);
         Optional<Book> book = bookRepo.findById(bookId);
-        if(bookStore.isPresent() && book.isPresent()){
+        if (bookStore.isPresent() && book.isPresent()) {
             book.get().setPriceWithCityInfo(bookStore.get().getCity());
             bookStore.get().getBookStoreBooks().add(book.get());
-            return updateById(bookStoreId,modelMapper.map(bookStore.get(),BookStoreDto.class));
+            return updateById(bookStoreId, modelMapper.map(bookStore.get(), BookStoreDto.class));
         }
         throw new RuntimeException("Not found bookstore with id: " + bookStoreId);
     }
@@ -97,9 +97,9 @@ public class BookStoreServiceImpl implements BookStoreService {
     public BookStoreDto deleteBookFromBookstore(Long bookStoreId, Long bookId) {
         Optional<BookStore> bookStore = bookStoreRepo.findById(bookStoreId);
         Optional<Book> book = bookRepo.findById(bookId);
-        if(bookStore.isPresent() && book.isPresent()){
+        if (bookStore.isPresent() && book.isPresent()) {
             bookStore.get().getBookStoreBooks().remove(book.get());
-            return updateById(bookStoreId,modelMapper.map(bookStore.get(),BookStoreDto.class));
+            return updateById(bookStoreId, modelMapper.map(bookStore.get(), BookStoreDto.class));
         }
         throw new RuntimeException("Not found book with id in bookstore: " + bookId);
 

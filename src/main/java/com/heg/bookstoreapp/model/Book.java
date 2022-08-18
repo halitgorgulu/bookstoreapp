@@ -94,7 +94,7 @@ public class Book {
         this.category = category;
     }
 
-    public void setPriceWithCityInfo(String city){
+    public void setPriceWithCityInfo(String city) {
         switch (city) {
             case "İstanbul":
                 this.price += 10;

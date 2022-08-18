@@ -15,6 +15,6 @@ public class BookStoreDto {
 
     private String address;
 
-    @JsonIgnoreProperties({"bookStores","id"})
+    @JsonIgnoreProperties({"bookStores", "id"})
     private Set<Book> bookStoreBooks;
 }

@@ -2,7 +2,6 @@ package com.heg.bookstoreapp.service.impl;
 
 import com.heg.bookstoreapp.dto.CategoryDto;
 import com.heg.bookstoreapp.model.Category;
-import com.heg.bookstoreapp.repo.BookRepo;
 import com.heg.bookstoreapp.repo.CategoryRepo;
 import com.heg.bookstoreapp.service.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -17,19 +16,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepo categoryRepo;
 
-    private final BookRepo bookRepo;
-
     private final ModelMapper modelMapper;
 
-    public CategoryServiceImpl(CategoryRepo categoryRepo, BookRepo bookRepo, ModelMapper modelMapper) {
+    public CategoryServiceImpl(CategoryRepo categoryRepo, ModelMapper modelMapper) {
         this.categoryRepo = categoryRepo;
-        this.bookRepo = bookRepo;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public CategoryDto insert(CategoryDto categoryDto) {
-        Category categoryInstance = modelMapper.map(categoryDto,Category.class);
+        Category categoryInstance = modelMapper.map(categoryDto, Category.class);
 
         List<Category> categoryList = categoryRepo.findAll();
         for (Category categoryIt : categoryList) {
@@ -43,14 +39,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> findAll() {
         List<Category> categories = categoryRepo.findAll();
-        return categories.stream().map(category -> modelMapper.map(category,CategoryDto.class)).collect(Collectors.toList());
+        return categories.stream().map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public CategoryDto findById(Long id) {
         Optional<Category> category = categoryRepo.findById(id);
-        if(category.isPresent()){
-            return modelMapper.map(category.get(),CategoryDto.class);
+        if (category.isPresent()) {
+            return modelMapper.map(category.get(), CategoryDto.class);
         }
         throw new RuntimeException("Not found category with id: " + id);
     }
@@ -60,10 +56,10 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> category = categoryRepo.findById(id);
 
-        if(category.isPresent()){
+        if (category.isPresent()) {
             categoryRepo.deleteById(id);
         }
-        throw new RuntimeException("Not found bookstore with id: " + id);
+        throw new RuntimeException("Not found category with id: " + id);
 
 
     }
@@ -72,7 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto updateById(Long id, CategoryDto categoryDto) {
         Optional<Category> categoryInstance = categoryRepo.findById(id);
 
-        if(categoryInstance.isPresent()){
+        if (categoryInstance.isPresent()) {
             categoryInstance.get().setName(categoryDto.getName());
             categoryRepo.save(categoryInstance.get());
             return modelMapper.map(categoryInstance.get(), CategoryDto.class);
