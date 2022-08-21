@@ -70,6 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (categoryInstance.isPresent()) {
             categoryInstance.get().setName(categoryDto.getName());
+            categoryInstance.get().setCategoryImage(categoryDto.getCategoryImage());
             categoryRepo.save(categoryInstance.get());
             return modelMapper.map(categoryInstance.get(), CategoryDto.class);
         }

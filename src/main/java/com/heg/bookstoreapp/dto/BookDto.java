@@ -11,11 +11,15 @@ import java.util.Set;
 @Data
 public class BookDto {
 
+    private Long id;
+
     private String name;
 
     private URL imageLink;
 
     private Float price;
+
+    private String description;
 
     @JsonIgnoreProperties({"id"})
     private Category category;

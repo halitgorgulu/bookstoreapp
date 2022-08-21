@@ -3,6 +3,7 @@ package com.heg.bookstoreapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,8 @@ public class BookStore {
     private String city;
 
     private String address;
+
+    private URL bookStoreImage;
 
     @JsonIgnoreProperties({"bookStores"})
     @ManyToMany(fetch = FetchType.LAZY,
@@ -35,11 +38,12 @@ public class BookStore {
     public BookStore() {
     }
 
-    public BookStore(Long id, String name, String city, String address, Set<Book> bookStoreBooks) {
+    public BookStore(Long id, String name, String city, String address, URL bookStoreImage, Set<Book> bookStoreBooks) {
         this.id = id;
         this.name = name;
         this.city = city;
         this.address = address;
+        this.bookStoreImage = bookStoreImage;
         this.bookStoreBooks = bookStoreBooks;
     }
 
@@ -73,6 +77,14 @@ public class BookStore {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public URL getBookStoreImage() {
+        return bookStoreImage;
+    }
+
+    public void setBookStoreImage(URL bookStoreImage) {
+        this.bookStoreImage = bookStoreImage;
     }
 
     public Set<Book> getBookStoreBooks() {

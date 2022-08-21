@@ -64,6 +64,7 @@ public class BookStoreServiceImpl implements BookStoreService {
             bookStore.get().setName(bookStoreDto.getName());
             bookStore.get().setCity(bookStoreDto.getCity());
             bookStore.get().setAddress(bookStoreDto.getAddress());
+            bookStore.get().setBookStoreImage(bookStoreDto.getBookStoreImage());
             bookStore.get().setBookStoreBooks(bookStoreDto.getBookStoreBooks());
             bookStoreRepo.save(bookStore.get());
             return modelMapper.map(bookStore.get(), BookStoreDto.class);
@@ -86,7 +87,6 @@ public class BookStoreServiceImpl implements BookStoreService {
         Optional<BookStore> bookStore = bookStoreRepo.findById(bookStoreId);
         Optional<Book> book = bookRepo.findById(bookId);
         if (bookStore.isPresent() && book.isPresent()) {
-            book.get().setPriceWithCityInfo(bookStore.get().getCity());
             bookStore.get().getBookStoreBooks().add(book.get());
             return updateById(bookStoreId, modelMapper.map(bookStore.get(), BookStoreDto.class));
         }

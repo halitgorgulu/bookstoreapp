@@ -21,6 +21,9 @@ public class Book {
 
     private Float price;
 
+    @Column(length = 65555)
+    private String description;
+
     @JsonIgnoreProperties({"bookStoreBooks"})
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -37,11 +40,12 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String name, URL imageLink, Float price, Set<BookStore> bookStores, Category category) {
+    public Book(Long id, String name, URL imageLink, Float price, String description, Set<BookStore> bookStores, Category category) {
         this.id = id;
         this.name = name;
         this.imageLink = imageLink;
         this.price = price;
+        this.description = description;
         this.bookStores = bookStores;
         this.category = category;
     }
@@ -76,6 +80,14 @@ public class Book {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Set<BookStore> getBookStores() {

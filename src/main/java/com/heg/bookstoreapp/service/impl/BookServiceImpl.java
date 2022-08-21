@@ -76,6 +76,7 @@ public class BookServiceImpl implements BookService {
             resultBook.get().setName(book.getName());
             resultBook.get().setPrice(book.getPrice());
             resultBook.get().setImageLink(book.getImageLink());
+            resultBook.get().setDescription(book.getDescription());
             resultBook.get().setCategory(categoryRepo.getCategoryByName(book.getCategory().getName()));
             bookRepo.save(resultBook.get());
             return modelMapper.map(resultBook.get(), BookDto.class);

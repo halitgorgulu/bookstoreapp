@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.util.Set;
 
 @Data
@@ -21,6 +22,8 @@ public class Category {
     private Long id;
 
     private String name;
+
+    private URL categoryImage;
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
