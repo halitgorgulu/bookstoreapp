@@ -21,10 +21,9 @@ public class BookDto {
 
     private String description;
 
-    @JsonIgnoreProperties({"id"})
     private Category category;
 
-    @JsonIgnoreProperties({"bookStoreBooks", "id"})
+    @JsonIgnoreProperties({"bookStoreBooks"})
     private Set<BookStore> bookStores;
 
 }

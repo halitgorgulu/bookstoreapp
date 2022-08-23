@@ -90,7 +90,7 @@ public class BookStoreServiceImpl implements BookStoreService {
             bookStore.get().getBookStoreBooks().add(book.get());
             return updateById(bookStoreId, modelMapper.map(bookStore.get(), BookStoreDto.class));
         }
-        throw new RuntimeException("Not found bookstore with id: " + bookStoreId);
+        throw new RuntimeException("Not found bookstore or book with this id");
     }
 
     @Override
