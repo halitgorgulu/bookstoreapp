@@ -3,7 +3,7 @@ package com.heg.bookstoreapp.api;
 import com.heg.bookstoreapp.dto.AuthenticationResponse;
 import com.heg.bookstoreapp.dto.LoginRequest;
 import com.heg.bookstoreapp.dto.RegisterRequest;
-import com.heg.bookstoreapp.model.RefreshTokenRequest;
+import com.heg.bookstoreapp.dto.RefreshTokenRequest;
 import com.heg.bookstoreapp.service.AuthService;
 import com.heg.bookstoreapp.service.impl.RefreshTokenServiceImpl;
 import org.springframework.http.ResponseEntity;

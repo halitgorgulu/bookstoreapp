@@ -1,4 +1,4 @@
-package com.heg.bookstoreapp.model;
+package com.heg.bookstoreapp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

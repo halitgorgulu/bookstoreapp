@@ -2,21 +2,25 @@ package com.heg.bookstoreapp.service.impl;
 
 import com.heg.bookstoreapp.dto.AuthenticationResponse;
 import com.heg.bookstoreapp.dto.LoginRequest;
+import com.heg.bookstoreapp.dto.RefreshTokenRequest;
 import com.heg.bookstoreapp.dto.RegisterRequest;
 import com.heg.bookstoreapp.exceptions.SendMailExceptions;
 import com.heg.bookstoreapp.model.NotificationEmail;
-import com.heg.bookstoreapp.model.RefreshTokenRequest;
 import com.heg.bookstoreapp.model.User;
 import com.heg.bookstoreapp.model.VerificationToken;
 import com.heg.bookstoreapp.repo.UserRepo;
 import com.heg.bookstoreapp.repo.VerificationTokenRepo;
 import com.heg.bookstoreapp.security.JwtProvider;
 import com.heg.bookstoreapp.service.AuthService;
+import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 @Transactional
 public class AuthServiceImpl implements AuthService {
 
@@ -35,16 +40,6 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final RefreshTokenServiceImpl refreshTokenService;
-
-    public AuthServiceImpl(PasswordEncoder passwordEncoder, UserRepo userRepo, VerificationTokenRepo verificationTokenRepo, MailService mailService, AuthenticationManager authenticationManager, JwtProvider jwtProvider, RefreshTokenServiceImpl refreshTokenService) {
-        this.passwordEncoder = passwordEncoder;
-        this.userRepo = userRepo;
-        this.verificationTokenRepo = verificationTokenRepo;
-        this.mailService = mailService;
-        this.authenticationManager = authenticationManager;
-        this.jwtProvider = jwtProvider;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @Override
     public void signup(RegisterRequest registerRequest) {
@@ -65,6 +60,21 @@ public class AuthServiceImpl implements AuthService {
                 "http://localhost:8081/api/auth/accountVerification/" + token));
     }
 
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        Jwt principal = (Jwt) SecurityContextHolder.
+                getContext().getAuthentication().getPrincipal();
+        return userRepo.findByUsername(principal.getSubject())
+                .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getSubject()));
+    }
+
+    private void fetchUserAndEnable(VerificationToken verificationToken) {
+        String username = verificationToken.getUser().getUsername();
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new SendMailExceptions("User not found with name: " + username));
+        user.setEnabled(true);
+        userRepo.save(user);
+    }
+
     private String generateVerificationToken(User user) {
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
@@ -72,7 +82,6 @@ public class AuthServiceImpl implements AuthService {
         verificationToken.setUser(user);
 
         verificationTokenRepo.save(verificationToken);
-
         return token;
     }
 
@@ -80,8 +89,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void verifyAccount(String token) {
         Optional<VerificationToken> verificationToken = verificationTokenRepo.findByToken(token);
-        verificationToken.orElseThrow(() -> new SendMailExceptions("Invalid Token"));
-        fetchUserAndEnable(verificationToken.get());
+        fetchUserAndEnable(verificationToken.orElseThrow(() -> new SendMailExceptions("Invalid Token")));
     }
 
     @Override
@@ -100,7 +108,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
-        String token = jwtProvider.generateTokenWithUsername(refreshTokenRequest.getUsername());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenRequest.getRefreshToken())
@@ -109,10 +117,8 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
-    private void fetchUserAndEnable(VerificationToken verificationToken) {
-        String username = verificationToken.getUser().getUsername();
-         User user = userRepo.findByUsername(username).orElseThrow(() -> new SendMailExceptions("User not found with name: " + username));
-         user.setEnabled(true);
-         userRepo.save(user);
+    public boolean isLoggedIn() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 }

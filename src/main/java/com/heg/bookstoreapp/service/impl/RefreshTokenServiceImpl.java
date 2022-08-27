@@ -3,6 +3,7 @@ package com.heg.bookstoreapp.service.impl;
 import com.heg.bookstoreapp.exceptions.SendMailExceptions;
 import com.heg.bookstoreapp.model.RefreshToken;
 import com.heg.bookstoreapp.repo.RefreshTokenRepo;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,14 +11,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 @Transactional
 public class RefreshTokenServiceImpl {
 
     private final RefreshTokenRepo refreshTokenRepo;
-
-    public RefreshTokenServiceImpl(RefreshTokenRepo refreshTokenRepo) {
-        this.refreshTokenRepo = refreshTokenRepo;
-    }
 
     public RefreshToken generateRefreshToken() {
         RefreshToken refreshToken = new RefreshToken();
