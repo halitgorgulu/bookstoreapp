@@ -6,14 +6,18 @@ import com.heg.bookstoreapp.model.BookStore;
 import com.heg.bookstoreapp.repo.BookRepo;
 import com.heg.bookstoreapp.repo.BookStoreRepo;
 import com.heg.bookstoreapp.service.BookStoreService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@Transactional
 public class BookStoreServiceImpl implements BookStoreService {
 
     private final BookStoreRepo bookStoreRepo;
@@ -42,12 +46,14 @@ public class BookStoreServiceImpl implements BookStoreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookStoreDto> findAll() {
         List<BookStore> bookStores = bookStoreRepo.findAll();
         return bookStores.stream().map(bookStore -> modelMapper.map(bookStore, BookStoreDto.class)).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookStoreDto findById(Long id) {
         Optional<BookStore> bookStore = bookStoreRepo.findById(id);
         if (bookStore.isPresent()) {
@@ -87,6 +93,9 @@ public class BookStoreServiceImpl implements BookStoreService {
         Optional<BookStore> bookStore = bookStoreRepo.findById(bookStoreId);
         Optional<Book> book = bookRepo.findById(bookId);
         if (bookStore.isPresent() && book.isPresent()) {
+            if(bookStore.get().getBookStoreBooks().contains(book.get())){
+                throw new RuntimeException("This book already inserted.");
+            }
             bookStore.get().getBookStoreBooks().add(book.get());
             return updateById(bookStoreId, modelMapper.map(bookStore.get(), BookStoreDto.class));
         }

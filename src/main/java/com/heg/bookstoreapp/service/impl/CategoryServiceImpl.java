@@ -4,14 +4,18 @@ import com.heg.bookstoreapp.dto.CategoryDto;
 import com.heg.bookstoreapp.model.Category;
 import com.heg.bookstoreapp.repo.CategoryRepo;
 import com.heg.bookstoreapp.service.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepo categoryRepo;
@@ -37,12 +41,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> findAll() {
         List<Category> categories = categoryRepo.findAll();
         return categories.stream().map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDto findById(Long id) {
         Optional<Category> category = categoryRepo.findById(id);
         if (category.isPresent()) {
