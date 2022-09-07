@@ -7,14 +7,18 @@ import com.heg.bookstoreapp.repo.BookRepo;
 import com.heg.bookstoreapp.repo.BookStoreRepo;
 import com.heg.bookstoreapp.repo.CategoryRepo;
 import com.heg.bookstoreapp.service.BookService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepo bookRepo;
@@ -54,12 +58,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookDto> findAll() {
         List<Book> books = bookRepo.findAll();
         return books.stream().map(book -> modelMapper.map(book, BookDto.class)).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookDto findById(Long id) {
         Optional<Book> book = bookRepo.findById(id);
         if (book.isPresent()) {
@@ -94,11 +100,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Book> getBooksByCategoryId(Long id) {
         return bookRepo.getBooksByCategory_Id(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookStore> getBookStoreByContainsBook(Long id) {
         Optional<Book> book = bookRepo.findById(id);
         if (book.isPresent()) {

@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
                 user.getEmail(),
                 "Thank you for signing up to BookStoreManagement," +
                 "please click on the below url to activate your account : " +
-                "http://localhost:8081/api/auth/accountVerification/" + token));
+                "http://localhost:8080/api/auth/accountVerification/" + token));
     }
 
     @Transactional(readOnly = true)
