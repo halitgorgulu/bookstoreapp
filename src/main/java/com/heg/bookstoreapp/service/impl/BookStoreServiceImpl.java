@@ -71,7 +71,6 @@ public class BookStoreServiceImpl implements BookStoreService {
             bookStore.get().setCity(bookStoreDto.getCity());
             bookStore.get().setAddress(bookStoreDto.getAddress());
             bookStore.get().setBookStoreImage(bookStoreDto.getBookStoreImage());
-            bookStore.get().setBookStoreBooks(bookStoreDto.getBookStoreBooks());
             bookStoreRepo.save(bookStore.get());
             return modelMapper.map(bookStore.get(), BookStoreDto.class);
         }
